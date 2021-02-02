@@ -79,10 +79,10 @@ public class DatabaseAkses {
 	
 	public static void view3() throws SQLException {
 		st = con.createStatement();
-		rs = st.executeQuery("SELECT  `tb_buku`.`ID_Buku`,  `tb_buku`.`NM_Buku` "
-				+ "FROM  `tb_buku` "
-				+ "INNER JOIN `tb_pinjam` ON `tb_pinjam`.`ID_Buku` = `tb_buku`.`ID_Buku` "
-				+ "WHERE tb_buku.ID_Buku IN (SELECT id_buku FROM tb_pinjam WHERE YEAR(tgl_pinjam)<2010)");
+		rs = st.executeQuery("SELECT DISTINCT tb_pinjam.ID_Buku, NM_Buku FROM tb_pinjam "
+				+ "INNER JOIN tb_buku ON tb_pinjam.ID_Buku=tb_buku.ID_Buku "
+				+ "WHERE tb_pinjam.ID_Buku NOT IN (SELECT ID_Buku FROM tb_pinjam WHERE YEAR(Tgl_Pinjam) = 2010) "
+				+ "AND tb_pinjam.ID_Buku IN (SELECT ID_Buku FROM tb_pinjam WHERE YEAR(Tgl_Pinjam) > 2010)");
 		
 		System.out.println("Daftar buku yang tidak pernah di pinjam di bawah tahun 2010 yang kemudian di pinjam di pada tahun 2010 ke atas :");
 		
